@@ -1,0 +1,7 @@
+# history
+*.history
+
+
+# history
+./backend/node_modules
+./frontend/node_modules
