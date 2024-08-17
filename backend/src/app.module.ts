@@ -20,18 +20,26 @@ import { LoggerModule } from 'nestjs-pino';
         uri: configService.get<string>('MONGO_URI'),
       }),
     }),
-    LoggerModule.forRoot({
-      pinoHttp: {
-        customProps: (req, res) => ({
-          context: 'HTTP',
-        }),
-        transport: {
-          target: 'pino-pretty',
-          options: {
-            singleLine: true,
+    LoggerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        pinoHttp: {
+          level:
+            configService.get<string>('NODE_ENV') === 'production'
+              ? 'info'
+              : 'debug',
+          customProps: (req, res) => ({
+            context: 'HTTP',
+          }),
+          transport: {
+            target: 'pino-pretty',
+            options: {
+              singleLine: true,
+            },
           },
         },
-      },
+      }),
     }),
     UserModule,
     AuthModule,

@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from 'nestjs-pino';
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +13,7 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new GlobalExceptionFilter());
+  app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
   // Enable CORS
   const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000'];
