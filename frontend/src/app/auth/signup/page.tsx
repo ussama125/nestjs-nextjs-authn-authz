@@ -33,6 +33,7 @@ export default function SignupPage() {
         password,
         confirmPassword,
       });
+      notify("Account created. You can now log in.", "success");
       router.push("/auth/login");
     } catch (error) {
       // console.error(error);
