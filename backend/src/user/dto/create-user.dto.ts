@@ -28,7 +28,7 @@ export class CreateUserDto {
     message:
       'New Password must contain at least one letter, one number, and one special character.',
   })
-  newPassword: string;
+  password: string;
 
   @IsString()
   @MinLength(8)
@@ -36,5 +36,5 @@ export class CreateUserDto {
     message:
       'Confirm Password must contain at least one letter, one number, and one special character.',
   })
-  confirmNewPassword: string;
+  confirmPassword: string;
 }

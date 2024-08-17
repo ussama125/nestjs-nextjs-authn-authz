@@ -36,9 +36,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         // Duplicate key error
         statusCode = HttpStatus.BAD_REQUEST;
         errorCode = 'ERR_DUPLICATE_KEY';
-        message = `Duplicate key error for field: ${getDuplicateKeyField(
-          exception,
-        )}`;
+        message = `${getDuplicateKeyField(exception).toUpperCase()} already exists`;
       } else if (exception.code === 121) {
         // Object ID cast error
         statusCode = HttpStatus.BAD_REQUEST;

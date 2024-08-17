@@ -33,14 +33,14 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    if (createUserDto.newPassword != createUserDto.confirmNewPassword) {
+    if (createUserDto.password != createUserDto.confirmPassword) {
       throw new BadRequestException(
         "'New password' doest not match the 'confirm new password'",
       );
     }
 
     const newPasswordHash = await this.getCryptedPassword(
-      createUserDto.newPassword,
+      createUserDto.password,
     );
 
     const user = new this.userModel({

@@ -13,12 +13,7 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   // Enable CORS
-  const allowedOrigins = [
-    'http://127.0.0.1',
-    // 'http://127.0.0.1:3000',
-    'http://localhost',
-    // 'http://localhost:3000'
-  ];
+  const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000'];
 
   app.enableCors({
     optionsSuccessStatus: 200,
