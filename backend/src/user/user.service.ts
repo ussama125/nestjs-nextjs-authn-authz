@@ -50,9 +50,9 @@ export class UserService {
       password: newPasswordHash,
       role: Role.USER,
     });
-    const savedUser = await user.save();
+    const savedUser: any = await user.save();
 
-    return savedUser;
+    return { ...savedUser._doc, password: undefined } as User;
   }
 
   async findAll({ page, size, sort, sortBy, filters }): Promise<any> {
