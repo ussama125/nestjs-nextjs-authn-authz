@@ -28,10 +28,10 @@ const useApiRequest = () => {
     };
     const user = session?.user as any;
 
-    if (user.access_token) {
+    if (user?.accessToken) {
       config.headers = {
         ...config.headers,
-        Authorization: `Bearer ${user.access_token}`,
+        Authorization: `Bearer ${user.accessToken}`,
       };
     }
 

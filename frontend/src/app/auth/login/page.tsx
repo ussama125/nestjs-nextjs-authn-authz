@@ -74,7 +74,7 @@ export default function LoginPage() {
               required
             />
             <div
-              className="absolute top-[42px] right-[5px] pr-3 flex items-center cursor-pointer text-sm leading-5"
+              className="absolute top-[42px] right-[15px] pr-3 flex items-center cursor-pointer text-sm leading-5"
               onClick={togglePasswordVisibility}
             >
               {passwordVisible ? (

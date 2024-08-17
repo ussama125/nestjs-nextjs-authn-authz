@@ -61,7 +61,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       {children}
       {notification && (
         <div
-          className={`fixed top-[10px] left-1/2 transform -translate-x-1/2 flex justify-center items-center px-8 py-2 shadow-md rounded-[50px] text-slate-100 text-white notification ${
+          className={`fixed top-[10px] left-1/2 transform -translate-x-1/2 flex justify-center items-center px-8 py-2 shadow-md rounded text-slate-100 text-white notification ${
             notification.type === "success" ? "bg-green" : "bg-red-500"
           }`}
         >
