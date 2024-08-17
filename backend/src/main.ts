@@ -3,12 +3,14 @@ import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
 
+  app.useLogger(app.get(Logger));
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new GlobalExceptionFilter());
 
@@ -33,6 +35,6 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  await app.listen(3001);
+  await app.listen(configService.get('PORT') || 3001);
 }
 bootstrap();

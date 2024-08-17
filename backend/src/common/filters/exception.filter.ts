@@ -14,8 +14,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(GlobalExceptionFilter.name);
 
   catch(exception: any, host: ArgumentsHost) {
-    this.logger.log('Exception: ', exception);
-    this.logger.log('Stack: ', exception.stack);
+    this.logger.error('Exception: ', exception);
+    this.logger.debug('Stack: ', exception.stack);
 
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -25,7 +25,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     let message = 'An error occurred';
 
     if (exception instanceof HttpException) {
-      this.logger.log('Error: ', exception.getResponse());
       const response: any = exception.getResponse();
       statusCode = exception.getStatus();
       errorCode = exception.name;
