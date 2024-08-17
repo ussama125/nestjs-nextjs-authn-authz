@@ -2,32 +2,152 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+html, body { height: 100% }
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: 1px solid rgba(221, 226, 228, 1);
+  z-index: 1;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.bg-gray {
+  background-color: #f7f9fb;
+  /* background-color: rgb(231, 231, 231); */
+}
+.bg-gray-30 {
+  background-color: rgba(179, 193, 200, 1);
+}
+main {
+  background-color: rgb(247, 249, 251);
+}
+
+.bg-orange {
+  background: #fb8500;
+}
+.bg-orange-light {
+  background: #fff2e3;
+}
+.bg-green {
+  background: rgba(7, 176, 76, 1);
+}
+.bg-blue {
+  background: #023047;
+}
+
+.color-blue {
+  color: #219ebc;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 30px;
+  color: rgba(2, 48, 71, 1);
+  padding: 5px 0;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+h5 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  color: rgba(3, 81, 119, 1);
+}
+
+.text-dark {
+  color: rgba(3, 81, 119, 1);
+}
+
+.font-primary {
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 500;
+  color: rgba(2, 48, 71, 1);
+}
+
+.font-primary-1 {
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 400;
+  color: rgba(2, 48, 71, 1);
+}
+
+.font-secondary {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  color: rgba(3, 81, 119, 1);
+}
+
+.input-text {
+  border: 1px solid rgba(221, 226, 228, 1);
+  background: rgba(255, 255, 255, 1);
+}
+
+.input-text:focus {
+  border: 1px solid rgba(2, 48, 71, 1);
+  outline-width: 0;
+}
+
+.input-text:hover {
+  border: 1px solid rgba(2, 48, 71, 1)
+}
+
+.notification {
+  min-height: 60px;
+  z-index: 10;
+}
+
+li.active h5, li.active svg {
+  color: rgba(2, 48, 71, 1);
+  font-weight: 500;
+}
+
+.label-1 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  color: rgba(2, 48, 71, 1);
+}
+
+.h-main {
+  height: calc(100vh - 80px);
+}
+
+.border-1 {
+  border: 1px solid rgba(221, 226, 228, 1)
+}
+.border-dark {
+  border: 1px solid rgba(2, 48, 71, 1)
+}
+.border-b-1 {
+  border-bottom: 1px solid rgba(221, 226, 228, 1)
+}
+
+.radius-1 {
+  border-radius: 30px
+}
+
+.text-url {
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
   }
-}
-
+  
+/* Hide scrollbar for IE, Edge and Firefox */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  scrollbar-width: none;
 }
