@@ -27,8 +27,13 @@ main {
 .bg-orange {
   background: #fb8500;
 }
-.bg-orange-light {
-  background: #fff2e3;
+.bg-orange :hover {
+  /* background: #ff9d2d; */
+  opacity: 0.8;
+  color: black;
+}
+.bg-blue-light {
+  background: #d1ecfa;
 }
 .bg-green {
   background: rgba(7, 176, 76, 1);
