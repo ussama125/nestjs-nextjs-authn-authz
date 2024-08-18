@@ -5,12 +5,14 @@ import { useNotification } from "@/contexts/NotificationContext";
 import useApiRequest from "@/hooks/useApiRequest";
 import { Card } from "@/components/Card";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
 
 export default function SignupPage() {
   const router = useRouter();
   const { notify } = useNotification();
-  const { loading, error, makeRequest } = useApiRequest();
+  const { loading, makeRequest } = useApiRequest();
+  const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const token = searchParams.get("token");
@@ -27,14 +29,16 @@ export default function SignupPage() {
       notify("Account verified. You can now sign in.", "success");
       router.push("/auth/login");
     } catch (error) {
-      // console.error(error);
+      if (error instanceof AxiosError) {
+        setError(error?.response?.data?.message + ". Please try again later.");
+      } else setError("Something went wrong. Please try again later.");
       notify(error, "error");
     }
   };
 
   return (
     <Card>
-      {!loading && !error && (
+      {!error ? (
         <div>
           <h2>Congratulations</h2>
           <h5 className="mt-1">
@@ -43,6 +47,10 @@ export default function SignupPage() {
               Sign In
             </Link>
           </h5>
+        </div>
+      ) : (
+        <div>
+          <h2 className="text-red-500">{error}</h2>
         </div>
       )}
     </Card>

@@ -43,9 +43,7 @@ const useApiRequest = () => {
       const axiosError = error as AxiosError;
 
       if (axiosError.response) {
-        const isProtectedRoute =
-          location.pathname.includes("login") ||
-          location.pathname.includes("complete-registeration");
+        const isProtectedRoute = location.pathname.includes("auth/");
         if (axiosError.response.status === 401 && !isProtectedRoute) {
           signOut();
         }
