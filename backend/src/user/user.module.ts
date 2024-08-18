@@ -8,6 +8,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ResetTokenSchema } from 'src/auth/schemas/resetToken.schema';
 import { HelperService } from 'src/common/services/helper.service';
 import { UserSchema } from './schema/user.schema';
+import { NodeMailerService } from 'src/emailer/nodemailer.service';
+import { EmailerService } from 'src/emailer/emailer.service';
 // import { EmailerService } from 'src/emailer/emailer.service';
 
 @Module({
@@ -22,7 +24,8 @@ import { UserSchema } from './schema/user.schema';
     AuthService,
     JwtService,
     LocalStrategy,
-    // EmailerService,
+    EmailerService,
+    NodeMailerService,
     HelperService,
   ],
   controllers: [UserController],

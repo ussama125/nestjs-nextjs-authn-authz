@@ -7,7 +7,6 @@ import { useNotification } from "@/contexts/NotificationContext";
 import Link from "next/link";
 import useApiRequest from "@/hooks/useApiRequest";
 import { Card } from "@/components/Card";
-import { Console } from "console";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -33,7 +32,10 @@ export default function SignupPage() {
         password,
         confirmPassword,
       });
-      notify("Account created. You can now log in.", "success");
+      notify(
+        "Verification link has been sent to your email. Please verify your email.",
+        "success"
+      );
       router.push("/auth/login");
     } catch (error) {
       // console.error(error);

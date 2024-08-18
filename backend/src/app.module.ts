@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoggerModule } from 'nestjs-pino';
+import { EmailerModule } from './emailer/emailer.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { LoggerModule } from 'nestjs-pino';
     }),
     UserModule,
     AuthModule,
+    EmailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

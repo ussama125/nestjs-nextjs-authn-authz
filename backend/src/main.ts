@@ -10,7 +10,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  app.useLogger(app.get(Logger));
+  // app.useLogger(app.get(Logger));
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
