@@ -27,6 +27,14 @@ export class AuthController {
     return this.userService.create(createUser);
   }
 
+  @Post('confirm-signup/:id')
+  async confirmSignup(
+    @Param('id') id: ObjectId,
+    @Body() confirmRegDto: ConfirmRegistrationDto,
+  ) {
+    return this.userService.confirmSignup(id, confirmRegDto);
+  }
+
   @Post('confirm-registration/:id')
   async confirmRegistration(
     @Param('id') id: ObjectId,

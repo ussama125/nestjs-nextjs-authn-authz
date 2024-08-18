@@ -19,6 +19,11 @@ import { UserStatusDto } from './dto/user-status.dto';
 import { HelperService } from 'src/common/services/helper.service';
 import { TokenType } from 'src/common/enums/token-type.enum';
 import { ForgotPasswordDto } from 'src/auth/dto/forgot-password.dto';
+import { ConfigService } from '@nestjs/config';
+import { SendEmailDto } from 'src/emailer/dto/send-email.dto';
+import { NodeMailerService } from 'src/emailer/nodemailer.service';
+import { EmailerService } from 'src/emailer/emailer.service';
+import { ConfirmRegistrationDto } from './dto/confirm-registration.dto';
 
 @Injectable()
 export class UserService {
@@ -30,6 +35,9 @@ export class UserService {
     @InjectModel('ResetToken')
     private readonly resetToken: Model<ResetToken>,
     private readonly helper: HelperService,
+    private readonly configService: ConfigService,
+    private readonly nodeMailer: NodeMailerService,
+    private readonly emailService: EmailerService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -46,13 +54,95 @@ export class UserService {
     const user = new this.userModel({
       ...createUserDto,
       isActive: true,
-      isVerified: true,
+      isVerified: false,
       password: newPasswordHash,
       role: Role.USER,
     });
     const savedUser: any = await user.save();
 
+    await this.sendRegistrationEmail(savedUser);
+
     return { ...savedUser._doc, password: undefined } as User;
+  }
+
+  async confirmSignup(
+    id: ObjectId,
+    confirmRegDto: ConfirmRegistrationDto,
+  ): Promise<User> {
+    const user = await this.userModel.findOne({ _id: id, isDeleted: false });
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    try {
+      await this.verifyToken(
+        confirmRegDto.verificationToken,
+        id,
+        TokenType.SIGNUP,
+      );
+    } catch (e) {
+      if (e instanceof GoneException) {
+        await this.sendRegistrationEmail(user);
+        throw new GoneException(
+          "Link is expired. We've sent you an email with fresh link.",
+        );
+      }
+      throw e;
+    }
+
+    const updatedUser = await this.userModel.findByIdAndUpdate(
+      id,
+      {
+        isVerified: true,
+      },
+      { new: true },
+    );
+
+    return updatedUser;
+  }
+
+  private async sendRegistrationEmail(user: User) {
+    const token = await this.getResetToken(user._id, TokenType.SIGNUP);
+    const appUrl = `${this.configService.get(
+      'SITE_LINK',
+    )}/auth/confirmsignup?id=${user._id}&token=${token}`;
+
+    const emailDTO = new SendEmailDto();
+    emailDTO.bcc = [user.email];
+    emailDTO.sender =
+      'no-reply@' + this.configService.get<string>('SITE_DOMAIN');
+    emailDTO.subject = `${this.configService.get<string>(
+      'SYSTEM_NAME',
+    )} has inited you to join their team`;
+
+    const emailBody = `
+    <tr>
+      <td colspan="2" style="padding: 20px;">
+        <p>Hi,</p>
+        <p>We are delighted to inform you that you have successfully signed up. To finish Signing Up and Activate Your Account, please click on the "Activate my account" button below.</p>
+        <p>If you have any questions or concerns, feel free to 
+        <a href="${this.configService.get<string>(
+          'SITE_LINK',
+        )}contact-us/">contact us</a>.</p>
+        <p style="margin-top:50px">Best regards,<br>Team ${this.configService.get<string>(
+          'SYSTEM_NAME',
+        )}</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: center; padding: 20px;">
+        <a href="${appUrl}" class="button">Activate my account</a>
+      </td>
+    </tr>
+    `;
+    emailDTO.html = this.emailService.getStandardEmail(
+      emailBody,
+      'Signup Invitation',
+    );
+    emailDTO.text = emailBody;
+
+    this.nodeMailer.sendRegistrationEmail(emailDTO);
+    // await this.emailService.sendEmail(emailDTO);
   }
 
   async findAll({ page, size, sort, sortBy, filters }): Promise<any> {
